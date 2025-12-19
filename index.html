@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NATSI - Identidad Corporativa</title>
+    <style>
+        :root {
+            --cyan: #00f2fe;
+            --purple: #9d50bb;
+            --bg: #0d0d0d;
+            --text: #e0e0e0;
+            --card-bg: rgba(15, 15, 15, 0.95);
+        }
+
+        #star-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #0d0d0d 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .hero-identity {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            text-align: center;
+            min-height: 100vh;
+        }
+
+        .logo-container {
+            width: 180px;
+            height: 180px;
+            margin-bottom: 20px;
+            z-index: 10;
+            perspective: 1000px;
+            animation: floatSpace 4s ease-in-out infinite;
+        }
+
+        @keyframes floatSpace {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-15px) scale(1.05); }
+        }
+
+        svg { width: 100%; height: 100%; overflow: visible; }
+        .cinta {
+            fill: none; stroke-width: 10; stroke-linejoin: round; stroke-linecap: round;
+            stroke-dasharray: 400; animation: flujoInfinito 3s linear infinite;
+        }
+        @keyframes flujoInfinito { from { stroke-dashoffset: 800; } to { stroke-dashoffset: 0; } }
+        .color-cyan { stroke: url(#gradCyan); }
+        .color-purple { stroke: url(#gradPurple); }
+        .shadow { stroke: rgba(0,0,0,0.6); stroke-width: 16; filter: blur(4px); }
+
+        .main-title {
+            color: var(--cyan);
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            margin-bottom: 5px;
+            font-weight: 800;
+            text-shadow: 0 0 25px rgba(0, 242, 254, 0.6);
+        }
+
+        .director-info {
+            font-family: 'Courier New', monospace;
+            border-top: 1px solid rgba(157, 80, 187, 0.4);
+            padding-top: 15px;
+            margin-top: 5px;
+            margin-bottom: 35px;
+        }
+
+        .director-name {
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            display: block;
+            letter-spacing: 2px;
+        }
+
+        .director-title {
+            color: var(--purple);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .typewriter-text { 
+            font-family: 'Courier New', monospace; 
+            color: var(--cyan); 
+            font-size: 0.9rem; 
+            margin-bottom: 20px;
+            min-height: 1.2em;
+        }
+
+        .cursor { display: inline-block; width: 8px; background-color: var(--cyan); animation: blink 0.7s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        .btn-portal {
+            position: relative;
+            padding: 12px 35px;
+            background: transparent;
+            color: var(--cyan);
+            font-family: 'Segoe UI', sans-serif;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-decoration: none;
+            border: 2px solid var(--cyan);
+            border-radius: 4px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .btn-portal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .btn-portal:hover {
+            background: var(--cyan);
+            color: #000;
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.6);
+            transform: scale(1.05);
+        }
+
+        .btn-portal::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-portal:hover::before {
+            left: 100%;
+        }
+
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+<canvas id="star-canvas"></canvas>
+
+<div class="hero-identity">
+    <div class="logo-container" id="logo">
+        <svg viewBox="0 0 100 100">
+            <defs>
+                <linearGradient id="gradCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#00f2fe" />
+                    <stop offset="100%" style="stop-color:#4facfe" />
+                </linearGradient>
+                <linearGradient id="gradPurple" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#9d50bb" />
+                    <stop offset="100%" style="stop-color:#6e48aa" />
+                </linearGradient>
+            </defs>
+            <path class="cinta color-cyan" d="M25,50 Q25,15 50,15 T75,50" />
+            <path class="cinta shadow" d="M50,25 Q85,25 85,50 T50,75 T15,50 T50,25" />
+            <path class="cinta color-purple" d="M50,25 Q85,25 85,50 T50,75 T15,50 T50,25" />
+            <path class="cinta color-cyan" d="M25,50 Q25,85 50,85 T75,50" />
+            <path d="M50,15 L51,15" fill="none" class="color-cyan" stroke-width="14" stroke-linecap="round" />
+        </svg>
+    </div>
+
+    <h1 class="main-title">NATSI</h1>
+    
+    <div class="typewriter-text">
+        <span id="header-type"></span><span class="cursor">_</span>
+    </div>
+
+    <div class="director-info">
+        <span class="director-name">TÉC. ANGEL MANUEL GUEVARA CHAVARRÍA</span>
+        <span class="director-title">Director de Núcleos Académicos & Técnico</span>
+    </div>
+
+    <a href="https://aula-privada-tecnica.github.io/NATSI/" class="btn-portal" id="main-btn">Acceder al Núcleo</a>
+</div>
+
+<script>
+    const canvas = document.getElementById('star-canvas');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+
+    function initStars() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        stars = [];
+        for (let i = 0; i < 200; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 2,
+                speed: Math.random() * 0.5 + 0.2
+            });
+        }
+    }
+
+    function animateStars() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "white";
+        stars.forEach(star => {
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+            ctx.fill();
+            star.y += star.speed;
+            if (star.y > canvas.height) star.y = 0;
+        });
+        requestAnimationFrame(animateStars);
+    }
+
+    function runTypewriter(elementId, text, speed) {
+        let index = 0;
+        const element = document.getElementById(elementId);
+        element.textContent = "";
+        function type() {
+            if (index < text.length) {
+                element.textContent += text.charAt(index);
+                index++;
+                setTimeout(type, speed);
+            } else {
+                setTimeout(() => {
+                    document.getElementById('main-btn').classList.add('visible');
+                }, 500);
+            }
+        }
+        type();
+    }
+
+    const logo = document.getElementById('logo');
+    document.addEventListener('mousemove', (e) => {
+        let x = (window.innerWidth / 2 - e.pageX) / 25;
+        let y = (window.innerHeight / 2 - e.pageY) / 25;
+        logo.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+        logo.style.filter = `drop-shadow(${x}px ${y}px 20px rgba(0, 242, 254, 0.5))`;
+    });
+
+    window.onload = () => {
+        initStars();
+        animateStars();
+        runTypewriter('header-type', "Núcleo Académico Técnico de Sistemas Informáticos", 60);
+    };
+
+    window.addEventListener('resize', initStars);
+</script>
+</body>
+</html>
